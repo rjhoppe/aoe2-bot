@@ -1,0 +1,4 @@
+.gitignore
+local.env
+notes.txt
+config.json
