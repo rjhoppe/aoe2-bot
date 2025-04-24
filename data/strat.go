@@ -1,14 +1,14 @@
 package data
 
 var StratToCivs = map[string][]string{
-	"flush archer":      {"Bohemenians", "Britons", "Dravidians", "Ethiopians", "Khmer", "Koreans", "Mayans"},
-	"flush men-at-arms": {"Celts", "Dravidians", "Ethiopians", "Goths", "Japanese", "Malians", "Poles"},
+	"flush archer":      {"Bohemenians", "Britons", "Dravidians", "Ethiopians", "Khmer", "Koreans", "Mayans", "Saracens"},
+	"flush men-at-arms": {"Celts", "Dravidians", "Ethiopians", "Goths", "Japanese", "Malians", "Poles", "Sicilians", "Slavs"},
 	"drush":             {"Armenians", "Aztecs", "Bulgarians", "Celts", "Goths"},
-	"scout rush":        {"Cumans", "Franks", "Georgians", "Gurjaras", "Hindustanis", "Khmer", "Lithuanians", "Magyars", "Mongols", "Poles"},
-	"tower rush":        {"Bohemians", "Incas"},
-	"fast castle":       {"Armenians", "Bohemians", "Burmese", "Dravidians", "Franks", "Goths", "Huns", "Incas", "Italians", "Japanese", "Khmer", "Lithuanians", "Mongols", "Poles", "Portuguese"},
-	"knight rush":       {"Berbers", "Bulgarians", "Burgudians", "Chinese", "Cumans", "Franks", "Georgians", "Huns", "Lithuanians", "Malians", "Persians", "Poles"},
-	"booming":           {"Bengalis", "Berbers", "Burgudians", "Byzantines", "Cumans", "Georgians", "Gurjaras", "Hindustanis", "Italians", "Koreans", "Malians", "Persians", "Portuguese"},
+	"scout rush":        {"Cumans", "Franks", "Georgians", "Gurjaras", "Hindustanis", "Khmer", "Lithuanians", "Magyars", "Mongols", "Poles", "Tartars"},
+	"tower rush":        {"Bohemians", "Incas", "Teutons"},
+	"fast castle":       {"Armenians", "Bohemians", "Burmese", "Dravidians", "Franks", "Goths", "Huns", "Incas", "Italians", "Japanese", "Khmer", "Lithuanians", "Mongols", "Poles", "Portuguese", "Spanish", "Turks", "Vikings"},
+	"knight rush":       {"Berbers", "Bulgarians", "Burgudians", "Chinese", "Cumans", "Franks", "Georgians", "Huns", "Lithuanians", "Malians", "Persians", "Poles", "Slavs", "Tartars", "Teutons", "Vikings"},
+	"booming":           {"Bengalis", "Berbers", "Burgudians", "Byzantines", "Cumans", "Georgians", "Gurjaras", "Hindustanis", "Italians", "Koreans", "Malians", "Persians", "Portuguese", "Saracens", "Sicilians", "Spanish", "Teutons", "Turks"},
 	"turtle":            {"Byzanties", "Georgians", "Sicilians", "Koreans"},
 	"crossbow rush":     {"Britons", "Chinese", "Ethiopians", "Mayans"},
 	"trash war":         {"Berbers", "Magyars", "Malay", "Poles"},
@@ -101,5 +101,3 @@ var StrategiesInfo = map[string]Strategy{
 		Tips:        "",
 	},
 }
-
-var StratToDesc = map[string]string{}

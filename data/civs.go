@@ -194,16 +194,15 @@ var civStrengths = map[string][]string{
 	"Persians":    {"Knight rush", "Persian Douche", "Booming"},
 	"Poles":       {"Scout rush", "Flush men-at-arms", "Fast Castle", "Knight rush", "Trash wars"},
 	"Portuguese":  {"Fast Castle", "Booming", "Gunpowder spam"},
-
-	"Saracens":   {"Flush archer", "Booming", "Mameluke and Camel spam"},
-	"Sicilians":  {"Flush men-at-arms", "Donjon drop", "Castle drop", "Booming", "Turtle"},
-	"Slavs":      {"Knight rush", "Flush men-at-arms"},
-	"Spanish":    {"Fast Castle", "Booming"},
-	"Tartars":    {"Scout rush", "Knight rush", "Steppe Lancer / Cav Archer rush", "Cavalry archer spam"},
-	"Teutons":    {"Booming", "Tower rush", "Knight rush"},
-	"Turks":      {"Fast Imperial", "Fast Castle", "Booming"},
-	"Vietnamese": {"Fast Imperial", "Cavalry Archer rush"},
-	"Vikings":    {"Fast Castle", "Knight rush", "Berserk / Longboat spam"},
+	"Saracens":    {"Flush archer", "Booming", "Mameluke and Camel spam"},
+	"Sicilians":   {"Flush men-at-arms", "Donjon drop", "Castle drop", "Booming", "Turtle"},
+	"Slavs":       {"Knight rush", "Flush men-at-arms"},
+	"Spanish":     {"Fast Castle", "Booming"},
+	"Tartars":     {"Scout rush", "Knight rush", "Steppe Lancer / Cav Archer rush", "Cavalry archer spam"},
+	"Teutons":     {"Booming", "Tower rush", "Knight rush"},
+	"Turks":       {"Fast Imperial", "Fast Castle", "Booming"},
+	"Vietnamese":  {"Fast Imperial", "Cavalry Archer rush"},
+	"Vikings":     {"Fast Castle", "Knight rush", "Berserk / Longboat spam"},
 }
 
 var civWeaknesses = map[string][]string{
