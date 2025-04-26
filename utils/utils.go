@@ -68,7 +68,9 @@ func PrintCmds(s *discordgo.Session, m *discordgo.MessageCreate) {
 	commandList.WriteString("\n")
 	commandList.WriteString("**!stratciv <STRATEGY>** -> Returns all the civs that can employ a specified strategy effectively")
 	commandList.WriteString("\n")
-	commandList.WriteString("**!civstrat <CIV>** -> Returns all the common strategies associated with particular civilization (does not return civ specific ones) ")
+	commandList.WriteString("**!civstrat <CIV>** -> Returns all the common strategies associated with particular civilization")
+	commandList.WriteString("\n")
+	commandList.WriteString("**!leaderboard** -> Returns the win-loss rankings for civs in competitive play")
 	cmds := commandList.String()
 	_, err := s.ChannelMessageSend(m.ChannelID, cmds)
 	if err != nil {

@@ -523,3 +523,7 @@ Weaknesses: %v`, civRaw, CivTypeToEmoji[civType], civType, civStr, civWeak)
 		}
 	}
 }
+
+func ListAllStrengths(civ string, s *discordgo.Session, m *discordgo.MessageCreate) {
+
+}

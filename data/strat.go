@@ -131,7 +131,7 @@ func FormatStratOutput(strat string, s *discordgo.Session, m *discordgo.MessageC
 		}
 	}
 
-	stratRaw := strings.ToLower(m.Content[6:])
+	stratRaw := strings.ToLower(m.Content[7:])
 	strategy := StrategiesInfo[stratRaw]
 
 	msg := fmt.Sprintf(
@@ -165,7 +165,7 @@ func CivsForStratOutput(strat string, s *discordgo.Session, m *discordgo.Message
 		}
 	}
 
-	stratRaw := strings.ToLower(m.Content[6:])
+	stratRaw := strings.ToLower(m.Content[12:])
 	civs := strings.Join(StratToCivs[stratRaw], ", ")
 
 	msg := fmt.Sprintf("%v: %v", stratRaw, civs)
