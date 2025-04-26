@@ -83,9 +83,11 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			players := data.BuildGame("3v3")
 			data.PrintGame(players, s, m)
 		case strings.Contains(m.Content, "!strat"):
-			fmt.Println("Placeholders")
+			data.FormatStratOutput(m.Content, s, m)
+		case strings.Contains(m.Content, "!stratlist"):
+			data.ListAllStrats(s, m)
 		case strings.Contains(m.Content, "!stratcivs"):
-			fmt.Println("Placeholders")
+			data.CivsForStratOutput(m.Content, s, m)
 		case strings.Contains(m.Content, "!civstrat"):
 			fmt.Println("Placeholders")
 		case strings.Contains(m.Content, "!help"):

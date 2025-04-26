@@ -14,6 +14,7 @@ type Civilization struct {
 
 type Strategy struct {
 	Name        string
+	Emoji       string
 	Description string
 	Pros        string
 	Cons        string

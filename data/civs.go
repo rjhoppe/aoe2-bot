@@ -494,7 +494,11 @@ func GetThreeRandomCivs(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 func GetCivInfo(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if len(m.Content) < 6 {
-		return
+		errMsg := "Invalid civ name"
+		_, err := s.ChannelMessageSend(m.ChannelID, errMsg)
+		if err != nil {
+			fmt.Printf("Error sending message to %v \n", errMsg)
+		}
 	}
 
 	civRaw := m.Content[6:]

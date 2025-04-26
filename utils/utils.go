@@ -16,6 +16,16 @@ func SelectRandomArrayEle(arr []string) string {
 	return arr[randomIndex]
 }
 
+func GetAllKeys(dataMap map[string][]string) string {
+	keyList := make([]string, 0, len(dataMap))
+	for key := range dataMap {
+		keyList = append(keyList, key)
+	}
+
+	keys := strings.Join(keyList, ", ")
+	return keys
+}
+
 func GetCurDate() string {
 	now := time.Now()
 	dateFormat := now.Format("01/02/2006")
@@ -51,6 +61,14 @@ func PrintCmds(s *discordgo.Session, m *discordgo.MessageCreate) {
 	commandList.WriteString("**!game2** -> Random the settings for a game with 2 human players")
 	commandList.WriteString("\n")
 	commandList.WriteString("**!game3** -> Random the settings for a game with 3 human players")
+	commandList.WriteString("\n")
+	commandList.WriteString("**!strat <STRATEGY>** -> Returns information on a given strategy")
+	commandList.WriteString("\n")
+	commandList.WriteString("**!stratlist** -> Lists all strategies you can pass to the !strat or !stratciv cmds")
+	commandList.WriteString("\n")
+	commandList.WriteString("**!stratciv <STRATEGY>** -> Returns all the civs that can employ a specified strategy effectively")
+	commandList.WriteString("\n")
+	commandList.WriteString("**!civstrat <CIV>** -> Returns all the common strategies associated with particular civilization (does not return civ specific ones) ")
 	cmds := commandList.String()
 	_, err := s.ChannelMessageSend(m.ChannelID, cmds)
 	if err != nil {
