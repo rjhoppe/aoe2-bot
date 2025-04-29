@@ -3,11 +3,13 @@ package bot
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 	"sync"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/rjhoppe/aoe-bot/data"
+	"github.com/rjhoppe/aoe-bot/scrape"
 	"github.com/rjhoppe/aoe-bot/utils"
 )
 
@@ -89,11 +91,17 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case strings.Contains(m.Content, "!stratcivs"):
 			data.CivsForStratOutput(m.Content, s, m)
 		case strings.Contains(m.Content, "!civstrat"):
-			fmt.Println("Placeholders")
-			// data.ListAllStrengths(m.Content, s, m)
-		// TODO
+			data.ListAllStrengths(m.Content, s, m)
 		case strings.Contains(m.Content, "!leaderboard"):
-			fmt.Println("Placeholders")
+			_, err := os.Stat("data/leaderboard.json")
+			if err != nil {
+				scrape.ScrapeStats()
+			}
+
+			data.GetCivLeaderBoardAll(s, m)
+		// Secret cmd that can be used to manually trigger a rescrape of the data
+		case strings.Contains(m.Content, "!scrape"):
+			scrape.ScrapeStats()
 		case strings.Contains(m.Content, "!help"):
 			msg := "Try using the **!cmds** command to get a list of all commands this bot accepts"
 			_, err := s.ChannelMessageSend(m.ChannelID, msg)

@@ -524,6 +524,25 @@ Weaknesses: %v`, civRaw, CivTypeToEmoji[civType], civType, civStr, civWeak)
 	}
 }
 
+// !civstrat
 func ListAllStrengths(civ string, s *discordgo.Session, m *discordgo.MessageCreate) {
+	isCmdValid := utils.IsValidCmd(10, s, m)
+	if !isCmdValid {
+		return
+	}
 
+	civRaw := strings.ToLower(m.Content[10:])
+	civStrs := strings.Join(civStrengths[civRaw], ", ")
+	if civStrs != "" {
+		civEmojis := CivTypeToEmoji[civRaw]
+
+		msg := fmt.Sprintf(`
+	%v: %v
+	---------------------------
+	Strategies: %v`, civRaw, civEmojis, civStrs)
+		_, err := s.ChannelMessageSend(m.ChannelID, msg)
+		if err != nil {
+			fmt.Printf("Error sending message to %v \n", msg)
+		}
+	}
 }

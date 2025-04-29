@@ -97,38 +97,36 @@ var StrategiesInfo = map[string]Strategy{
 		Tips:        "This strategy is much more successfully executed on closed-off maps (ex: Black Forest) than open maps (Arabia). ",
 	},
 	"crossbow rush": {
-		Name:        "",
+		Name:        "Crossbow Rush",
 		Emoji:       "❌🏹",
-		Description: "",
-		Pros:        "",
-		Cons:        "",
-		Tips:        "",
+		Description: "Rush your enemy early with Crossbowmen right after reaching the Castle Age.",
+		Pros:        "Very powerful rush that is effective against players attemtping to boom. Cheaper than a knight rush and can be micromanged more easily.",
+		Cons:        "Can be countered by walls (turtling), cavalry, and skirmishers",
+		Tips:        "Begin building your Archers in the Feudal Age (8-10 will suffice). Immediately research Bodkin Arrows from the Blacksmith and the Crossbowmen upgrade upon advancing to the Castle Age before attacking.",
 	},
 	"trash war": {
 		Name:        "Trash War",
 		Emoji:       "🗑️⚔️",
-		Description: "",
-		Pros:        "",
-		Cons:        "",
-		Tips:        "",
+		Description: "A late game strategy/situation when gold is scarce and the remaining players rely on cheap units with little or no gold cost.",
+		Pros:        "Some civilizations have bonuses that give them a great advantage in a trash war scenario. These advantages are typically quite difficult to counter without units that require gold.",
+		Cons:        "This is not a viable strategy in team games due to trade. The strategy is also highly reliant on reaching the endgame.",
+		Tips:        "Players relying on waging an effective trash war will need to survive until their opponent's gold reserves run low. It would also help if you limit your opponent's access to relics to reduce/eliminate gold trickle.",
 	},
 	"castle drop": {
 		Name:        "Castle Drop",
 		Emoji:       "⤵️🏯",
-		Description: "",
-		Pros:        "",
-		Cons:        "",
-		Tips:        "",
+		Description: "Build a Castle inside or right next to your enemy's base as soon as you reach Castle Age",
+		Pros:        "Powerful mechanism to take map control and cripple your opponent's economy. Also gives you the opportunit to build your unique units next to or inside your enemy's base.",
+		Cons:        "High risk, high reward strategy. Failure to execute will result in a significant setback. Can be countered by walling and rushing.",
+		Tips:        "Prioritize gathering stone early (~3-5 villagers on stone by Feudal). You will need around 7-10 villagers to build your castle effectively. Be sure to scout your opponent's base before moving your villagers, identifying any obstacles or ideal places to build your Castle.",
 	},
 }
 
+// !strat!
 func FormatStratOutput(strat string, s *discordgo.Session, m *discordgo.MessageCreate) {
-	if len(m.Content) < 7 {
-		errMsg := "Invalid strategy name"
-		_, err := s.ChannelMessageSend(m.ChannelID, errMsg)
-		if err != nil {
-			fmt.Printf("Error sending message to %v \n", errMsg)
-		}
+	isCmdValid := utils.IsValidCmd(8, s, m)
+	if !isCmdValid {
+		return
 	}
 
 	stratRaw := strings.ToLower(m.Content[7:])
@@ -147,6 +145,7 @@ Tips: || %v ||`, strategy.Name, strategy.Emoji, strategy.Description, strategy.P
 	}
 }
 
+// !stratlist
 func ListAllStrats(s *discordgo.Session, m *discordgo.MessageCreate) {
 	strats := utils.GetAllKeys(StratToCivs)
 	msg := fmt.Sprintf("%v", strats)
@@ -156,16 +155,14 @@ func ListAllStrats(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
+// !stratcivs
 func CivsForStratOutput(strat string, s *discordgo.Session, m *discordgo.MessageCreate) {
-	if len(m.Content) < 12 {
-		errMsg := "Invalid strategy name"
-		_, err := s.ChannelMessageSend(m.ChannelID, errMsg)
-		if err != nil {
-			fmt.Printf("Error sending message to %v \n", errMsg)
-		}
+	isCmdValid := utils.IsValidCmd(12, s, m)
+	if !isCmdValid {
+		return
 	}
 
-	stratRaw := strings.ToLower(m.Content[12:])
+	stratRaw := strings.ToLower(m.Content[11:])
 	civs := strings.Join(StratToCivs[stratRaw], ", ")
 
 	msg := fmt.Sprintf("%v: %v", stratRaw, civs)

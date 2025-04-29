@@ -32,10 +32,29 @@ func GetCurDate() string {
 	return dateFormat
 }
 
+func FirstCharToUpper(s string) string {
+	if s != "" {
+		return strings.ToUpper(string(s[0])) + s[1:]
+	}
+	return s
+}
+
 // Check text for the Discord bot cmd initiator char
 func CheckMsgForExclamation(msg string) bool {
 	cmdChar := '!'
 	return strings.ContainsRune(msg, cmdChar)
+}
+
+func IsValidCmd(validLen int, s *discordgo.Session, m *discordgo.MessageCreate) bool {
+	if len(m.Content) < validLen {
+		errMsg := "Invalid input, not enough chars"
+		_, err := s.ChannelMessageSend(m.ChannelID, errMsg)
+		if err != nil {
+			fmt.Printf("Error sending message to %v \n", errMsg)
+		}
+		return false
+	}
+	return true
 }
 
 func PrintCmds(s *discordgo.Session, m *discordgo.MessageCreate) {
