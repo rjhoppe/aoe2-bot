@@ -135,10 +135,10 @@ func FormatStratOutput(strat string, s *discordgo.Session, m *discordgo.MessageC
 	msg := fmt.Sprintf(
 		`%v: %v
 ---------------------------
-Description: || %v ||
-Pros: || %v ||
-Cons: || %v ||
-Tips: || %v ||`, strategy.Name, strategy.Emoji, strategy.Description, strategy.Pros, strategy.Cons, strategy.Tips)
+Description: %v
+Pros: %v
+Cons: %v
+Tips: %v`, strategy.Name, strategy.Emoji, strategy.Description, strategy.Pros, strategy.Cons, strategy.Tips)
 	_, err := s.ChannelMessageSend(m.ChannelID, msg)
 	if err != nil {
 		fmt.Printf("Error sending message to %v \n", msg)
@@ -156,6 +156,7 @@ func ListAllStrats(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 // !stratcivs
+// "**!stratcivs <STRATEGY>** -> Returns all the civs that can employ a specified strategy effectively"
 func CivsForStratOutput(strat string, s *discordgo.Session, m *discordgo.MessageCreate) {
 	isCmdValid := utils.IsValidCmd(12, s, m)
 	if !isCmdValid {

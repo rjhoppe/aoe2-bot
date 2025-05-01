@@ -531,15 +531,16 @@ func ListAllStrengths(civ string, s *discordgo.Session, m *discordgo.MessageCrea
 		return
 	}
 
-	civRaw := strings.ToLower(m.Content[10:])
+	civRaw := m.Content[10:]
 	civStrs := strings.Join(civStrengths[civRaw], ", ")
 	if civStrs != "" {
-		civEmojis := CivTypeToEmoji[civRaw]
+		civType := CivType[civRaw]
+		civEmojis := CivTypeToEmoji[civType]
 
 		msg := fmt.Sprintf(`
 	%v: %v
-	---------------------------
-	Strategies: %v`, civRaw, civEmojis, civStrs)
+---------------------------
+Strategies: %v`, civRaw, civEmojis, civStrs)
 		_, err := s.ChannelMessageSend(m.ChannelID, msg)
 		if err != nil {
 			fmt.Printf("Error sending message to %v \n", msg)

@@ -19,10 +19,6 @@ RUN go build -o discord-bot ./
 # --- Final Stage: Create a smaller runtime image ---
 FROM alpine:latest
 
-# Install necessary runtime dependencies (if any)
-# For a simple bot, you might not need extra dependencies
-# RUN apk add --no-cache <your-runtime-dependencies>
-
 # Set the working directory
 WORKDIR /app
 

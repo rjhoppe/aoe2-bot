@@ -56,6 +56,8 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			summonLads(s, m)
 		case strings.Contains(m.Content, "!cmds"):
 			utils.PrintCmds(s, m)
+		case strings.HasPrefix(m.Content, "!civstrat"):
+			data.ListAllStrengths(m.Content, s, m)
 		case strings.Contains(m.Content, "!civ"):
 			civ := data.GetNewRandomCiv("all")
 			data.PrintCivOutput("", civ, s, m)
@@ -84,14 +86,13 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case strings.Contains(m.Content, "!game3") || strings.Contains(m.Content, "!game"):
 			players := data.BuildGame("3v3")
 			data.PrintGame(players, s, m)
+		case strings.HasPrefix(m.Content, "!stratlist"):
+			data.ListAllStrats(s, m)
+		case strings.HasPrefix(m.Content, "!stratcivs"):
+			data.CivsForStratOutput(m.Content, s, m)
+		// must come after stratlist and stratcivs
 		case strings.Contains(m.Content, "!strat"):
 			data.FormatStratOutput(m.Content, s, m)
-		case strings.Contains(m.Content, "!stratlist"):
-			data.ListAllStrats(s, m)
-		case strings.Contains(m.Content, "!stratcivs"):
-			data.CivsForStratOutput(m.Content, s, m)
-		case strings.Contains(m.Content, "!civstrat"):
-			data.ListAllStrengths(m.Content, s, m)
 		case strings.Contains(m.Content, "!leaderboard"):
 			_, err := os.Stat("data/leaderboard.json")
 			if err != nil {
