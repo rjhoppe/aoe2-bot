@@ -100,7 +100,9 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 
 			data.GetCivLeaderBoardAll(s, m)
-		// Secret cmd that can be used to manually trigger a rescrape of the data
+		case strings.Contains(m.Content, "!winrate"):
+			data.GetCivWinRate(s, m)
+		// Secret cmd that can be used to manually trigger a rescrape of the winrate data
 		case strings.Contains(m.Content, "!scrape"):
 			scrape.ScrapeStats()
 		case strings.Contains(m.Content, "!help"):

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/playwright-community/playwright-go"
 )
@@ -61,21 +62,9 @@ func ScrapeStats() error {
 	// get all the span class="text-stats-high"
 	civWinRates := make([]string, 0, 50)
 
-	statLocator := page.Locator(".text-stats-high")
-	count, err = statLocator.Count()
-	if err != nil {
-		return fmt.Errorf("failed to count elements: %w", err)
-	}
-
-	for i := 0; i < count; i++ {
-		el := statLocator.Nth(i)
-		text, err := el.TextContent()
-		if err != nil {
-			fmt.Printf("warning: failed to get text content: %v\n", err)
-			continue
-		}
-		civWinRates = append(civWinRates, text)
-	}
+	getStats(".text-stats-high", page, &civWinRates)
+	getStats(".text-stats-medium", page, &civWinRates)
+	getStats(".text-stats-low", page, &civWinRates)
 
 	// match the civ to the win rate
 	civToWinRate := map[string]string{}
@@ -90,6 +79,27 @@ func ScrapeStats() error {
 	}
 
 	return nil
+}
+
+func getStats(className string, page playwright.Page, statsDataStruct *[]string) {
+	statLocator := page.Locator(className)
+	count, err := statLocator.Count()
+	if err != nil {
+		fmt.Printf("failed to count elements: %s", err)
+	}
+
+	for i := 0; i < count; i++ {
+		el := statLocator.Nth(i)
+		text, err := el.TextContent()
+		if err != nil {
+			fmt.Printf("warning: failed to get text content: %v\n", err)
+			continue
+		}
+		cleanedText := strings.TrimSpace(text)
+		if cleanedText != "" {
+			*statsDataStruct = append(*statsDataStruct, cleanedText)
+		}
+	}
 }
 
 func sendToLocalJsonFile(data map[string]string) error {
