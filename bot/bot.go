@@ -42,6 +42,10 @@ func Start(params *BotParams) {
 		log.Fatalf("something went wrong when starting the bot: %v", err)
 	}
 
+	fmt.Println("Scraping stats...")
+	scrape.ScrapeStats()
+	fmt.Println("Scraping job complete")
+
 	select {}
 }
 
@@ -92,7 +96,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			data.CivsForStratOutput(m.Content, s, m)
 		// must come after stratlist and stratcivs
 		case strings.Contains(m.Content, "!strat"):
-			data.FormatStratOutput(m.Content, s, m)
+			data.FormatStratOutput(s, m)
 		case strings.Contains(m.Content, "!leaderboard"):
 			_, err := os.Stat("data/leaderboard.json")
 			if err != nil {

@@ -525,7 +525,7 @@ Weaknesses: %v`, civRaw, CivTypeToEmoji[civType], civType, civStr, civWeak)
 }
 
 // !civstrat
-func ListAllStrengths(civ string, s *discordgo.Session, m *discordgo.MessageCreate) {
+func ListAllStrengths(s *discordgo.Session, m *discordgo.MessageCreate) {
 	isCmdValid := utils.IsValidCmd(10, s, m)
 	if !isCmdValid {
 		return

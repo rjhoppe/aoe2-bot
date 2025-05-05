@@ -123,7 +123,7 @@ var StrategiesInfo = map[string]Strategy{
 }
 
 // !strat!
-func FormatStratOutput(strat string, s *discordgo.Session, m *discordgo.MessageCreate) {
+func FormatStratOutput(s *discordgo.Session, m *discordgo.MessageCreate) {
 	isCmdValid := utils.IsValidCmd(8, s, m)
 	if !isCmdValid {
 		return
