@@ -2,8 +2,9 @@ package data
 
 import (
 	"testing"
-)
 
+	"github.com/bwmarrin/discordgo"
+)
 
 func TestGetRandomWaterMap(t *testing.T) {
 	mapType := "water"
@@ -28,7 +29,7 @@ func TestPrintRandomMap(t *testing.T) {
 			Content: "!map",
 		},
 	}
-	PrintRandomMap(randomMap, mockSession, mockMessage)
+	PrintRandomMap("Black Forest", mockSession, mockMessage)
 	if mockSession.LastChannelID == "" || mockSession.LastMessage == "" {
 		t.Errorf("Expected ChannelMessageSend to be called, but it wasn't")
 	}
@@ -44,7 +45,7 @@ func TestGetRandomMap_All(t *testing.T) {
 		t.Errorf("Expected a map, got empty string")
 	}
 	found := false
-	for _, mapName := range allMaps {
+	for _, mapName := range RandomMaps {
 		if randomMap == mapName {
 			found = true
 			break

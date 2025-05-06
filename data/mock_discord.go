@@ -1,14 +1,13 @@
 package data
 
 import (
-	"testing",
-	"github.com/bwmarrin/discordgo",
+	"github.com/bwmarrin/discordgo"
 )
 
-type MockSessions struct {
+type MockSession struct {
 	LastChannelID string
-	LastMessage string
-	CallCount int
+	LastMessage   string
+	CallCount     int
 }
 
 func (m *MockSession) ChannelMessageSend(channelID, content string) (*discordgo.Message, error) {

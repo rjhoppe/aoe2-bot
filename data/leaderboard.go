@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
+	"strconv"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/rjhoppe/aoe-bot/utils"
@@ -23,10 +25,10 @@ func GetCivLeaderBoardAll(s *discordgo.Session, m *discordgo.MessageCreate) erro
 	}
 
 	type pair struct {
-		Civ   string
+		Civ     string
 		Winrate float64
 	}
-	
+
 	var pairs []pair
 	for civ, winRateStr := range parsedContent {
 		winrate, err := strconv.ParseFloat(winRateStr, 64)
@@ -35,16 +37,16 @@ func GetCivLeaderBoardAll(s *discordgo.Session, m *discordgo.MessageCreate) erro
 		}
 		pairs = append(pairs, pair{Civ: civ, Winrate: winrate})
 	}
-	
+
 	sort.Slice(pairs, func(i, j int) bool {
 		return pairs[i].Winrate > pairs[j].Winrate
 	})
-	
+
 	var msg string
 	for _, pair := range pairs {
 		msg += fmt.Sprintf("%v: %v\n", pair.Civ, pair.Winrate)
 	}
-	
+
 	_, err = s.ChannelMessageSend(m.ChannelID, msg)
 	if err != nil {
 		fmt.Printf("Error sending message to %v \n", msg)

@@ -1,8 +1,11 @@
 package data
 
 import (
-	"testing",
-	"github.com/bwmarrin/discordgo",
+	"strings"
+	"testing"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/rjhoppe/aoe-bot/utils"
 )
 
 func TestGetNewRandomCiv_All(t *testing.T) {
@@ -86,7 +89,14 @@ func TestPrintCivOutput(t *testing.T) {
 			Content: "!civ",
 		},
 	}
-	PrintCivOutput("all", mockSession, mockMessage)
+	mockCiv := Civilization{
+		Name:       "Briton",
+		Type:       "Foot archer",
+		Strengths:  "Flush archer, Crossbowmen rush",
+		Weaknesses: "Weak cavalry, Easily countered with Siege Rams, Reliant on Trebuchets for siege, Mediocre archer options outside of Longbowmen",
+	}
+
+	PrintCivOutput("", &mockCiv, mockSession, mockMessage)
 	if mockSession.LastChannelID == "" || mockSession.LastMessage == "" {
 		t.Errorf("Expected ChannelMessageSend to be called, but it wasn't")
 	}
@@ -109,7 +119,7 @@ func TestGetThreeRandomCivs(t *testing.T) {
 	if mockSession.CallCount != 1 {
 		t.Errorf("Expected ChannelMessageSend to be called once, but it was called %d times", mockSession.CallCount)
 	}
-	
+
 	civs := strings.Split(mockSession.LastMessage, ",")
 	if len(civs) != 3 {
 		t.Errorf("Expected 3 civs, got %d", len(civs))
@@ -141,7 +151,7 @@ func TestListAllStrengths_ValidCiv(t *testing.T) {
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!civstrat Britons", // "Britons" is a valid civ
+			Content:   "!civstrat Britons", // "Britons" is a valid civ
 			ChannelID: "test-channel",
 		},
 	}
@@ -164,7 +174,7 @@ func TestListAllStrengths_InvalidCmd(t *testing.T) {
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!civstrat",
+			Content:   "!civstrat",
 			ChannelID: "test-channel",
 		},
 	}
@@ -184,7 +194,7 @@ func TestListAllStrengths_UnknownCiv(t *testing.T) {
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!civstrat NotACiv",
+			Content:   "!civstrat NotACiv",
 			ChannelID: "test-channel",
 		},
 	}

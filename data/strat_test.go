@@ -1,14 +1,18 @@
 package data
 
 import (
+	"strings"
 	"testing"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/rjhoppe/aoe-bot/utils"
 )
 
 func TestFormatStratOutput(t *testing.T) {
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!strat drush",
+			Content:   "!strat drush",
 			ChannelID: "test-channel",
 		},
 	}
@@ -61,7 +65,7 @@ func TestListAllStrats(t *testing.T) {
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!stratlist",		
+			Content:   "!stratlist",
 			ChannelID: "test-channel",
 		},
 	}
@@ -69,7 +73,7 @@ func TestListAllStrats(t *testing.T) {
 
 	if mockSession.CallCount != 1 {
 		t.Errorf("Expected ChannelMessageSend to be called once, got %d", mockSession.CallCount)
-	}	
+	}
 	if mockSession.LastChannelID != "test-channel" {
 		t.Errorf("Expected channel ID 'test-channel', got %s", mockSession.LastChannelID)
 	}
@@ -81,8 +85,6 @@ func TestListAllStrats(t *testing.T) {
 	}
 }
 
-
-
 func TestFormatStratOutputUserInputTooShort(t *testing.T) {
 	// Save the original function and restore after test
 	origIsValidCmd := utils.IsValidCmd
@@ -92,11 +94,11 @@ func TestFormatStratOutputUserInputTooShort(t *testing.T) {
 	utils.IsValidCmd = func(_ int, _ *discordgo.Session, _ *discordgo.MessageCreate) bool {
 		return false
 	}
-	
+
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!strat",		
+			Content:   "!strat",
 			ChannelID: "test-channel",
 		},
 	}
@@ -111,7 +113,7 @@ func TestFormatStratOutputUserInputInvalid(t *testing.T) {
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!strat flush",		
+			Content:   "!strat flush",
 			ChannelID: "test-channel",
 		},
 	}
@@ -119,7 +121,7 @@ func TestFormatStratOutputUserInputInvalid(t *testing.T) {
 
 	if mockSession.CallCount != 1 {
 		t.Errorf("Expected ChannelMessageSend to be called once, got %d", mockSession.CallCount)
-	}	
+	}
 	if mockSession.LastMessage == "" {
 		t.Error("Expected a message to be sent, got empty string")
 	}
