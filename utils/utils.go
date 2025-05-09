@@ -9,11 +9,25 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+type DiscordSession interface {
+	ChannelMessageSend(channelID string, content string, options ...discordgo.RequestOption) (*discordgo.Message, error)
+}
+
 func SelectRandomArrayEle(arr []string) string {
 	source := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(source)
 	randomIndex := r.Intn(len(arr))
 	return arr[randomIndex]
+}
+
+func GetAllKeys(dataMap map[string][]string) string {
+	keyList := make([]string, 0, len(dataMap))
+	for key := range dataMap {
+		keyList = append(keyList, key)
+	}
+
+	keys := strings.Join(keyList, ", ")
+	return keys
 }
 
 func GetCurDate() string {
@@ -22,10 +36,29 @@ func GetCurDate() string {
 	return dateFormat
 }
 
+func FirstCharToUpper(s string) string {
+	if s != "" {
+		return strings.ToUpper(string(s[0])) + s[1:]
+	}
+	return s
+}
+
 // Check text for the Discord bot cmd initiator char
 func CheckMsgForExclamation(msg string) bool {
 	cmdChar := '!'
 	return strings.ContainsRune(msg, cmdChar)
+}
+
+var IsValidCmd = func(validLen int, s DiscordSession, m *discordgo.MessageCreate) bool {
+	if len(m.Content) < validLen {
+		errMsg := "Invalid input, not enough chars"
+		_, err := s.ChannelMessageSend(m.ChannelID, errMsg)
+		if err != nil {
+			fmt.Printf("Error sending message to %v \n", errMsg)
+		}
+		return false
+	}
+	return true
 }
 
 func PrintCmds(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -51,6 +84,16 @@ func PrintCmds(s *discordgo.Session, m *discordgo.MessageCreate) {
 	commandList.WriteString("**!game2** -> Random the settings for a game with 2 human players")
 	commandList.WriteString("\n")
 	commandList.WriteString("**!game3** -> Random the settings for a game with 3 human players")
+	commandList.WriteString("\n")
+	commandList.WriteString("**!strat <STRATEGY>** -> Returns information on a given strategy")
+	commandList.WriteString("\n")
+	commandList.WriteString("**!stratlist** -> Lists all strategies you can pass to the !strat or !stratciv cmds")
+	commandList.WriteString("\n")
+	commandList.WriteString("**!stratcivs <STRATEGY>** -> Returns all the civs that can employ a specified strategy effectively")
+	commandList.WriteString("\n")
+	commandList.WriteString("**!civstrat <CIV>** -> Returns all the common strategies associated with particular civilization")
+	commandList.WriteString("\n")
+	commandList.WriteString("**!leaderboard** -> Returns the win-loss rankings for civs in competitive play")
 	cmds := commandList.String()
 	_, err := s.ChannelMessageSend(m.ChannelID, cmds)
 	if err != nil {

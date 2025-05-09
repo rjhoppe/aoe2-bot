@@ -53,7 +53,7 @@ func BuildGame(gameType string) []Player {
 	return players
 }
 
-func PrintGame(players []Player, s *discordgo.Session, m *discordgo.MessageCreate) {
+func PrintGame(players []Player, s DiscordSession, m *discordgo.MessageCreate) {
 	date := utils.GetCurDate()
 	randomMap := GetRandomMap("all")
 	msg := fmt.Sprintf(

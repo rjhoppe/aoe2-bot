@@ -12,6 +12,16 @@ type Civilization struct {
 	Weaknesses string
 }
 
+type Strategy struct {
+	Name        string
+	Emoji       string
+	Description string
+	Pros        string
+	Cons        string
+	Tips        string
+	Civs        []string
+}
+
 var CivTypeToEmoji = map[string]string{
 	"Infantry and Monk":      "⚔️✝️",
 	"Elephant and Naval":     "🐘🚢",

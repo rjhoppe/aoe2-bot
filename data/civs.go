@@ -8,7 +8,7 @@ import (
 	"github.com/rjhoppe/aoe-bot/utils"
 )
 
-var AllCivs = []string{
+var allCivs = []string{
 	"Armenians",
 	"Aztecs",
 	"Bengalis",
@@ -56,7 +56,7 @@ var AllCivs = []string{
 	"Vikings",
 }
 
-var ArcherCivs = []string{
+var archerCivs = []string{
 	"Bohemians",
 	"Britons",
 	"Chinese",
@@ -71,7 +71,7 @@ var ArcherCivs = []string{
 	"Vietnamese",
 }
 
-var InfantryCivs = []string{
+var infantryCivs = []string{
 	"Armenians",
 	"Aztecs",
 	"Bulgarians",
@@ -88,7 +88,7 @@ var InfantryCivs = []string{
 	"Vikings",
 }
 
-var CavCivs = []string{
+var cavCivs = []string{
 	"Bengalis",
 	"Berbers",
 	"Bulgarians",
@@ -158,54 +158,54 @@ var CivType = map[string]string{
 	"Vikings":     "Infantry and Naval",
 }
 
-var CivStrengths = map[string][]string{
-	"Armenians":   {"Drush", "Flush", "Fast Castle"},
+var civStrengths = map[string][]string{
+	"Armenians":   {"Drush", "Flush men-at-arms", "Fast Castle"},
 	"Aztecs":      {"Drush", "Eagle Warrior rush"},
 	"Bengalis":    {"Booming", "Elephant spam"},
 	"Berbers":     {"Knight rush", "Booming", "Trash war"},
-	"Bohemians":   {"Archer rush", "Tower drop", "Fast Castle"},
-	"Britons":     {"Flush", "Crossbowmen rush"},
+	"Bohemians":   {"Flush archer", "Tower rush", "Fast Castle"},
+	"Britons":     {"Flush archer", "Crossbowmen rush"},
 	"Bulgarians":  {"Drush", "Long Swordsmen rush", "Knight rush", "Krepost drop"},
-	"Burgundians": {"Booming", "Cavalier rush in Castle Age"},
-	"Burmese":     {"Flush", "Fast Castle", "Cavalry spam"},
+	"Burgundians": {"Booming", "Knight rush", "Cavalier rush in Castle Age"},
+	"Burmese":     {"Flush men-at-arms", "Fast Castle", "Cavalry spam"},
 	"Byzantines":  {"Booming", "Turtle"},
-	"Celts":       {"Drush", "Flush"},
+	"Celts":       {"Drush", "Flush men-at-arms"},
 	"Chinese":     {"Crossbowmen rush", "Knight rush"},
-	"Cumans":      {"Scout rush", "Knight / Steppe Lancer / Kipchak / Cav archer rush", "Early booming"},
-	"Dravidians":  {"Flush", "Archer rush", "Fast Castle", "Infantry spam"},
-	"Ethiopians":  {"Archer rush", "Flush", "Crossbowmen rush"},
+	"Cumans":      {"Scout rush", "Knight rush", "Steppe Lancer / Kipchak / Cav archer rush", "Booming"},
+	"Dravidians":  {"Flush men-at-arms", "Flush archer", "Fast Castle", "Infantry spam"},
+	"Ethiopians":  {"Flush archer", "Flush men-at-arms", "Crossbowmen rush"},
 	"Franks":      {"Knight rush", "Scout rush", "Castle drop", "Fast Castle"},
 	"Georgians":   {"Scout rush", "Knight rush", "Booming", "Turtle"},
-	"Goths":       {"Drush", "Flush", "Fast Castle", "Infantry spam"},
+	"Goths":       {"Drush", "Flush men-at-arms", "Fast Castle", "Infantry spam"},
 	"Gurjaras":    {"Scout rush", "Camel Scout rush", "Booming", "Cavalry spam"},
 	"Hindustanis": {"Booming", "Drush", "Scout rush"},
 	"Huns":        {"Fast Castle", "Cavalry Archer rush", "Knight rush"},
 	"Incas":       {"Tower rush", "Eagle Warrior rush", "Fast Castle"},
 	"Italians":    {"Booming", "Fast Castle", "Galley rush"},
-	"Japanese":    {"Flush", "Fast Castle"},
-	"Khmer":       {"Fast Castle", "Archer rush", "Scout rush", "Scorpion and Elephant spam"},
-	"Koreans":     {"Archer rush", "Turtle", "Booming"},
+	"Japanese":    {"Flush men-at-arms", "Fast Castle"},
+	"Khmer":       {"Fast Castle", "Flush archer", "Scout rush", "Scorpion and Elephant spam"},
+	"Koreans":     {"Flush archer", "Turtle", "Booming"},
 	"Lithuanians": {"Scout rush", "Fast Castle", "Knight Rush"},
-	"Magyars":     {"Flush", "Scout rush", "Trash war"},
+	"Magyars":     {"Scout rush", "Trash war"},
 	"Malay":       {"Elephant rush", "Naval spam", "Castle drop", "Trash war"},
-	"Malians":     {"Flush", "Knight rush", "Booming"},
-	"Mayans":      {"Archer rush", "Crossbowmen rush", "Archer and Eagle Warrior spam"},
-	"Mongols":     {"Scout rush", "Mangudai and Siege spam"},
+	"Malians":     {"Flush men-at-arms", "Knight rush", "Booming"},
+	"Mayans":      {"Flush archer", "Crossbowmen rush", "Archer and Eagle Warrior spam"},
+	"Mongols":     {"Scout rush", "Mangudai and Siege spam", "Fast Castle"},
 	"Persians":    {"Knight rush", "Persian Douche", "Booming"},
-	"Poles":       {"Scout rush", "Flush", "Fast Castle", "Knight rush", "Trash wars"},
+	"Poles":       {"Scout rush", "Flush men-at-arms", "Fast Castle", "Knight rush", "Trash wars"},
 	"Portuguese":  {"Fast Castle", "Booming", "Gunpowder spam"},
-	"Saracens":    {"Archer rush", "Booming", "Mameluke and Camel spam"},
-	"Sicilians":   {"Flush", "Donjon drop", "Castle drop", "Booming", "Turtle"},
-	"Slavs":       {"Knight rush", "Flush"},
+	"Saracens":    {"Flush archer", "Booming", "Mameluke and Camel spam"},
+	"Sicilians":   {"Flush men-at-arms", "Donjon drop", "Castle drop", "Booming", "Turtle"},
+	"Slavs":       {"Knight rush", "Flush men-at-arms"},
 	"Spanish":     {"Fast Castle", "Booming"},
-	"Tartars":     {"Scout rush", "Knight / Steppe Lancer / Cav Archer rush", "Cavalry archer spam"},
+	"Tartars":     {"Scout rush", "Knight rush", "Steppe Lancer / Cav Archer rush", "Cavalry archer spam"},
 	"Teutons":     {"Booming", "Tower rush", "Knight rush"},
 	"Turks":       {"Fast Imperial", "Fast Castle", "Booming"},
 	"Vietnamese":  {"Fast Imperial", "Cavalry Archer rush"},
 	"Vikings":     {"Fast Castle", "Knight rush", "Berserk / Longboat spam"},
 }
 
-var CivWeaknesses = map[string][]string{
+var civWeaknesses = map[string][]string{
 	"Armenians": {
 		"Slow economy",
 		"Missing many key Imperial Age upgrades",
@@ -445,23 +445,23 @@ func GetNewRandomCiv(civType string) *Civilization {
 
 	switch civType {
 	case "archer":
-		civ.Name = utils.SelectRandomArrayEle(ArcherCivs)
+		civ.Name = utils.SelectRandomArrayEle(archerCivs)
 	case "cavalry":
-		civ.Name = utils.SelectRandomArrayEle(CavCivs)
+		civ.Name = utils.SelectRandomArrayEle(cavCivs)
 	case "infantry":
-		civ.Name = utils.SelectRandomArrayEle(InfantryCivs)
+		civ.Name = utils.SelectRandomArrayEle(infantryCivs)
 	default:
-		civ.Name = utils.SelectRandomArrayEle(AllCivs)
+		civ.Name = utils.SelectRandomArrayEle(allCivs)
 	}
 
 	civ.Type = CivType[civ.Name]
-	civ.Strengths = strings.Join(CivStrengths[civ.Name], ", ")
-	civ.Weaknesses = strings.Join(CivWeaknesses[civ.Name], ", ")
+	civ.Strengths = strings.Join(civStrengths[civ.Name], ", ")
+	civ.Weaknesses = strings.Join(civWeaknesses[civ.Name], ", ")
 
 	return &civ
 }
 
-func PrintCivOutput(civType string, civ *Civilization, s *discordgo.Session, m *discordgo.MessageCreate) {
+func PrintCivOutput(civType string, civ *Civilization, s DiscordSession, m *discordgo.MessageCreate) {
 	msg := fmt.Sprintf(
 		`%v: %v || %v ||
 ---------------------------
@@ -473,7 +473,7 @@ Civ Weakness: || %v ||`, civ.Name, CivTypeToEmoji[civ.Type], civ.Type, civ.Stren
 	}
 }
 
-func GetThreeRandomCivs(s *discordgo.Session, m *discordgo.MessageCreate) {
+func GetThreeRandomCivs(s DiscordSession, m *discordgo.MessageCreate) {
 	civsMap := make(map[string]bool)
 	civNames := make([]string, 0, 3)
 
@@ -492,16 +492,20 @@ func GetThreeRandomCivs(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
-func GetCivInfo(s *discordgo.Session, m *discordgo.MessageCreate) {
+func GetCivInfo(s DiscordSession, m *discordgo.MessageCreate) {
 	if len(m.Content) < 6 {
-		return
+		errMsg := "Invalid civ name"
+		_, err := s.ChannelMessageSend(m.ChannelID, errMsg)
+		if err != nil {
+			fmt.Printf("Error sending message to %v \n", errMsg)
+		}
 	}
 
 	civRaw := m.Content[6:]
 	civType := CivType[civRaw]
 	if civType != "" {
-		civStr := strings.Join(CivStrengths[civRaw], ", ")
-		civWeak := strings.Join(CivWeaknesses[civRaw], ", ")
+		civStr := strings.Join(civStrengths[civRaw], ", ")
+		civWeak := strings.Join(civWeaknesses[civRaw], ", ")
 		msg := fmt.Sprintf(`
 %v: %v || %v ||
 ---------------------------
@@ -513,6 +517,30 @@ Weaknesses: %v`, civRaw, CivTypeToEmoji[civType], civType, civStr, civWeak)
 		}
 	} else {
 		msg := fmt.Sprintf("Could not find civ: %v", civRaw)
+		_, err := s.ChannelMessageSend(m.ChannelID, msg)
+		if err != nil {
+			fmt.Printf("Error sending message to %v \n", msg)
+		}
+	}
+}
+
+// !civstrat
+func ListAllStrengths(s DiscordSession, m *discordgo.MessageCreate) {
+	isCmdValid := utils.IsValidCmd(10, s, m)
+	if !isCmdValid {
+		return
+	}
+
+	civRaw := m.Content[10:]
+	civStrs := strings.Join(civStrengths[civRaw], ", ")
+	if civStrs != "" {
+		civType := CivType[civRaw]
+		civEmojis := CivTypeToEmoji[civType]
+
+		msg := fmt.Sprintf(`
+	%v: %v
+---------------------------
+Strategies: %v`, civRaw, civEmojis, civStrs)
 		_, err := s.ChannelMessageSend(m.ChannelID, msg)
 		if err != nil {
 			fmt.Printf("Error sending message to %v \n", msg)

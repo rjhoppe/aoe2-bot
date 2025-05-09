@@ -4,6 +4,20 @@ FROM golang:1.23-alpine AS builder
 # Set the working directory inside the container
 WORKDIR /app
 
+# Install Playwright dependencies
+RUN apk add --no-cache \
+    nss \
+    chromium \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    nodejs \
+    npm \
+    git
+
+# Install Playwright CLI globally
+RUN npm install -g playwright
+
 # Copy go.mod and go.sum files to download dependencies
 COPY go.mod go.sum ./
 
@@ -19,12 +33,21 @@ RUN go build -o discord-bot ./
 # --- Final Stage: Create a smaller runtime image ---
 FROM alpine:latest
 
-# Install necessary runtime dependencies (if any)
-# For a simple bot, you might not need extra dependencies
-# RUN apk add --no-cache <your-runtime-dependencies>
-
 # Set the working directory
 WORKDIR /app
+
+# Install Playwright dependencies in the runtime image too
+RUN apk add --no-cache \
+    nss \
+    chromium \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    nodejs \
+    npm
+
+# Install Playwright CLI and browsers
+RUN npm install -g playwright && playwright install --with-deps
 
 # Copy the built executable from the builder stage
 COPY --from=builder /app/discord-bot /app/discord-bot

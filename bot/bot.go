@@ -3,11 +3,13 @@ package bot
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 	"sync"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/rjhoppe/aoe-bot/data"
+	"github.com/rjhoppe/aoe-bot/scrape"
 	"github.com/rjhoppe/aoe-bot/utils"
 )
 
@@ -40,6 +42,10 @@ func Start(params *BotParams) {
 		log.Fatalf("something went wrong when starting the bot: %v", err)
 	}
 
+	fmt.Println("Scraping stats...")
+	scrape.ScrapeStats()
+	fmt.Println("Scraping job complete")
+
 	select {}
 }
 
@@ -54,6 +60,8 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			summonLads(s, m)
 		case strings.Contains(m.Content, "!cmds"):
 			utils.PrintCmds(s, m)
+		case strings.HasPrefix(m.Content, "!civstrat"):
+			data.ListAllStrengths(s, m)
 		case strings.Contains(m.Content, "!civ"):
 			civ := data.GetNewRandomCiv("all")
 			data.PrintCivOutput("", civ, s, m)
@@ -82,6 +90,25 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case strings.Contains(m.Content, "!game3") || strings.Contains(m.Content, "!game"):
 			players := data.BuildGame("3v3")
 			data.PrintGame(players, s, m)
+		case strings.HasPrefix(m.Content, "!stratlist"):
+			data.ListAllStrats(s, m)
+		case strings.HasPrefix(m.Content, "!stratcivs"):
+			data.CivsForStratOutput(m.Content, s, m)
+		// must come after stratlist and stratcivs
+		case strings.Contains(m.Content, "!strat"):
+			data.FormatStratOutput(s, m)
+		case strings.Contains(m.Content, "!leaderboard"):
+			_, err := os.Stat("data/leaderboard.json")
+			if err != nil {
+				scrape.ScrapeStats()
+			}
+
+			data.GetCivLeaderBoardAll(s, m, "data/leaderboard.json")
+		case strings.Contains(m.Content, "!winrate"):
+			data.GetCivWinRate(s, m)
+		// Secret cmd that can be used to manually trigger a rescrape of the winrate data
+		case strings.Contains(m.Content, "!scrape"):
+			scrape.ScrapeStats()
 		case strings.Contains(m.Content, "!help"):
 			msg := "Try using the **!cmds** command to get a list of all commands this bot accepts"
 			_, err := s.ChannelMessageSend(m.ChannelID, msg)

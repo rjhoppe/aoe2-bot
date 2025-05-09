@@ -1,0 +1,22 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+    -   id: check-added-large-files
+    -   id: check-merge-conflict
+    -   id: check-symlinks
+-   repo: https://github.com/tekwizely/pre-commit-golang
+    rev: v1.0.0-rc.1
+    hooks:
+    -   id: go-mod-tidy
+    -   id: go-build-mod
+    # -   id: go-fmt
+    # Disable after first run
+    -   id: go-fmt-repo
+        args: [ '-w' ]
+    # -   id: go-lint
+    # -   id: go-staticcheck-mod
+    -   id: go-test-mod
