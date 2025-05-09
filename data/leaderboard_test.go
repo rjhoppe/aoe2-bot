@@ -10,9 +10,9 @@ import (
 
 func TestGetLeaderboardData(t *testing.T) {
 	mockJSON := `{
-		"Britons": "56.2",
-		"Franks": "52.8",
-		"Aztecs": "60.1"
+		"Britons": "56.20%",
+		"Franks": "52.80%",
+		"Aztecs": "60.10%"
 	}`
 
 	tempDir := t.TempDir()
@@ -32,16 +32,16 @@ func TestGetLeaderboardData(t *testing.T) {
 	if len(leaderboard) != 3 {
 		t.Errorf("Expected 3 entries, got %d", len(leaderboard))
 	}
-	if leaderboard["Britons"] != "56.2" {
-		t.Errorf("Expected Britons winrate to be 56.2, got %s", leaderboard["Britons"])
+	if leaderboard["Britons"] != "56.20%" {
+		t.Errorf("Expected Britons winrate to be 56.20%%, got %s", leaderboard["Britons"])
 	}
 }
 
 func TestFormatLeaderboardData(t *testing.T) {
 	leaderboardData := map[string]string{
-		"Britons": "56.2",
-		"Franks":  "52.8",
-		"Aztecs":  "60.1",
+		"Britons": "56.20%",
+		"Franks":  "52.80%",
+		"Aztecs":  "60.10%",
 	}
 
 	formattedData, err := FormatLeaderboardData(leaderboardData)
@@ -49,7 +49,7 @@ func TestFormatLeaderboardData(t *testing.T) {
 		t.Fatalf("Expected no error, got: %v", err)
 	}
 
-	expectedOutput := "Aztecs: 60.1\nBritons: 56.2\nFranks: 52.8\n"
+	expectedOutput := "Aztecs: 60.10%\nBritons: 56.20%\nFranks: 52.80%\n"
 	if formattedData != expectedOutput {
 		t.Errorf("Expected formatted data to be %q, got %q", expectedOutput, formattedData)
 	}
@@ -65,18 +65,18 @@ func TestGetCivLeaderBoardAll(t *testing.T) {
 	}
 
 	mockJSON := `{
-		"Byzantines": "58.7",
-		"Incas": "52.7",
-		"Magyars": "60.3",
-		"Malay": "56.2",
-		"Mayans": "52.1",
-		"Portuguese": "60.2",
-		"Spanish": "56.8",
-		"Turks": "52.8",
-		"Vietnamese": "60.1"
+		"Byzantines": "58.70%",
+		"Incas": "52.70%",
+		"Magyars": "60.30%",
+		"Malay": "56.20%",
+		"Mayans": "52.10%",
+		"Portuguese": "60.20%",
+		"Spanish": "56.80%",
+		"Turks": "52.80%",
+		"Vietnamese": "60.10%"
 	}`
 
-	expectedOutput := "Magyars: 60.3\nPortuguese: 60.2\nVietnamese: 60.1\nByzantines: 58.7\nSpanish: 56.8\nMalay: 56.2\nTurks: 52.8\nIncas: 52.7\nMayans: 52.1\n"
+	expectedOutput := "Magyars: 60.30%\nPortuguese: 60.20%\nVietnamese: 60.10%\nByzantines: 58.70%\nSpanish: 56.80%\nMalay: 56.20%\nTurks: 52.80%\nIncas: 52.70%\nMayans: 52.10%\n"
 
 	tempDir := t.TempDir()
 	testFile := filepath.Join(tempDir, "test_leaderboard.json")
