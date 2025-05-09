@@ -123,7 +123,7 @@ var StrategiesInfo = map[string]Strategy{
 }
 
 // !strat!
-func FormatStratOutput(s *discordgo.Session, m *discordgo.MessageCreate) {
+func FormatStratOutput(s DiscordSession, m *discordgo.MessageCreate) {
 	isCmdValid := utils.IsValidCmd(8, s, m)
 	if !isCmdValid {
 		return
@@ -146,7 +146,7 @@ Tips: %v`, strategy.Name, strategy.Emoji, strategy.Description, strategy.Pros, s
 }
 
 // !stratlist
-func ListAllStrats(s *discordgo.Session, m *discordgo.MessageCreate) {
+func ListAllStrats(s DiscordSession, m *discordgo.MessageCreate) {
 	strats := utils.GetAllKeys(StratToCivs)
 	msg := fmt.Sprintf("%v", strats)
 	_, err := s.ChannelMessageSend(m.ChannelID, msg)
@@ -157,7 +157,7 @@ func ListAllStrats(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 // !stratcivs
 // "**!stratcivs <STRATEGY>** -> Returns all the civs that can employ a specified strategy effectively"
-func CivsForStratOutput(strat string, s *discordgo.Session, m *discordgo.MessageCreate) {
+func CivsForStratOutput(strat string, s DiscordSession, m *discordgo.MessageCreate) {
 	isCmdValid := utils.IsValidCmd(12, s, m)
 	if !isCmdValid {
 		return

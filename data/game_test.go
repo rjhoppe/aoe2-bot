@@ -2,16 +2,27 @@ package data
 
 import (
 	"testing"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func TestPrintGame(t *testing.T) {
+	mockPlayers := []Player{
+		{Name: "Player 1", Civ: GetNewRandomCiv("all")},
+		{Name: "Player 2", Civ: GetNewRandomCiv("all")},
+		{Name: "Player 3", Civ: GetNewRandomCiv("all")},
+		{Name: "CPU 1", Civ: GetNewRandomCiv("all")},
+		{Name: "CPU 2", Civ: GetNewRandomCiv("all")},
+		{Name: "CPU 3", Civ: GetNewRandomCiv("all")},
+	}
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!game",
+			Content:   "!game",
+			ChannelID: "test-channel",
 		},
 	}
-	PrintGame(players, mockSession, mockMessage)
+	PrintGame(mockPlayers, mockSession, mockMessage)
 	if mockSession.LastChannelID == "" || mockSession.LastMessage == "" {
 		t.Errorf("Expected ChannelMessageSend to be called, but it wasn't")
 	}

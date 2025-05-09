@@ -1,14 +1,18 @@
 package data
 
 import (
+	"strings"
 	"testing"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/rjhoppe/aoe-bot/utils"
 )
 
 func TestFormatStratOutput(t *testing.T) {
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!strat drush",
+			Content:   "!strat drush",
 			ChannelID: "test-channel",
 		},
 	}
@@ -31,8 +35,9 @@ func TestFormatStratOutput(t *testing.T) {
 
 func TestStrategiesInfo_TurtleIsPopulated(t *testing.T) {
 	strategy, ok := StrategiesInfo["turtle"]
+	strategy.Civs = StratToCivs[strings.ToLower(strategy.Name)]
 	if !ok {
-		t.Fatal("Expected 'drush' strategy to exist in StrategiesInfo")
+		t.Fatal("Expected 'turtle' strategy to exist in StrategiesInfo")
 	}
 	if strategy.Name == "" {
 		t.Error("Expected strategy.Name to be set, got empty string")
@@ -52,6 +57,7 @@ func TestStrategiesInfo_TurtleIsPopulated(t *testing.T) {
 	if strategy.Tips == "" {
 		t.Error("Expected strategy.Tips to be set, got empty string")
 	}
+
 	if len(strategy.Civs) == 0 {
 		t.Error("Expected strategy.Civs to be set, got empty slice")
 	}
@@ -61,7 +67,7 @@ func TestListAllStrats(t *testing.T) {
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!stratlist",		
+			Content:   "!stratlist",
 			ChannelID: "test-channel",
 		},
 	}
@@ -69,7 +75,7 @@ func TestListAllStrats(t *testing.T) {
 
 	if mockSession.CallCount != 1 {
 		t.Errorf("Expected ChannelMessageSend to be called once, got %d", mockSession.CallCount)
-	}	
+	}
 	if mockSession.LastChannelID != "test-channel" {
 		t.Errorf("Expected channel ID 'test-channel', got %s", mockSession.LastChannelID)
 	}
@@ -81,22 +87,20 @@ func TestListAllStrats(t *testing.T) {
 	}
 }
 
-
-
 func TestFormatStratOutputUserInputTooShort(t *testing.T) {
 	// Save the original function and restore after test
 	origIsValidCmd := utils.IsValidCmd
 	defer func() { utils.IsValidCmd = origIsValidCmd }()
 
 	// Mock IsValidCmd to always return false
-	utils.IsValidCmd = func(_ int, _ *discordgo.Session, _ *discordgo.MessageCreate) bool {
+	utils.IsValidCmd = func(_ int, _ utils.DiscordSession, _ *discordgo.MessageCreate) bool {
 		return false
 	}
-	
+
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!strat",		
+			Content:   "!strat",
 			ChannelID: "test-channel",
 		},
 	}
@@ -111,7 +115,7 @@ func TestFormatStratOutputUserInputInvalid(t *testing.T) {
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!strat flush",		
+			Content:   "!strat flush",
 			ChannelID: "test-channel",
 		},
 	}
@@ -119,7 +123,7 @@ func TestFormatStratOutputUserInputInvalid(t *testing.T) {
 
 	if mockSession.CallCount != 1 {
 		t.Errorf("Expected ChannelMessageSend to be called once, got %d", mockSession.CallCount)
-	}	
+	}
 	if mockSession.LastMessage == "" {
 		t.Error("Expected a message to be sent, got empty string")
 	}

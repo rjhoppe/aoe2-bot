@@ -461,7 +461,7 @@ func GetNewRandomCiv(civType string) *Civilization {
 	return &civ
 }
 
-func PrintCivOutput(civType string, civ *Civilization, s *discordgo.Session, m *discordgo.MessageCreate) {
+func PrintCivOutput(civType string, civ *Civilization, s DiscordSession, m *discordgo.MessageCreate) {
 	msg := fmt.Sprintf(
 		`%v: %v || %v ||
 ---------------------------
@@ -473,7 +473,7 @@ Civ Weakness: || %v ||`, civ.Name, CivTypeToEmoji[civ.Type], civ.Type, civ.Stren
 	}
 }
 
-func GetThreeRandomCivs(s *discordgo.Session, m *discordgo.MessageCreate) {
+func GetThreeRandomCivs(s DiscordSession, m *discordgo.MessageCreate) {
 	civsMap := make(map[string]bool)
 	civNames := make([]string, 0, 3)
 
@@ -492,7 +492,7 @@ func GetThreeRandomCivs(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
-func GetCivInfo(s *discordgo.Session, m *discordgo.MessageCreate) {
+func GetCivInfo(s DiscordSession, m *discordgo.MessageCreate) {
 	if len(m.Content) < 6 {
 		errMsg := "Invalid civ name"
 		_, err := s.ChannelMessageSend(m.ChannelID, errMsg)
@@ -525,7 +525,7 @@ Weaknesses: %v`, civRaw, CivTypeToEmoji[civType], civType, civStr, civWeak)
 }
 
 // !civstrat
-func ListAllStrengths(s *discordgo.Session, m *discordgo.MessageCreate) {
+func ListAllStrengths(s DiscordSession, m *discordgo.MessageCreate) {
 	isCmdValid := utils.IsValidCmd(10, s, m)
 	if !isCmdValid {
 		return

@@ -61,7 +61,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case strings.Contains(m.Content, "!cmds"):
 			utils.PrintCmds(s, m)
 		case strings.HasPrefix(m.Content, "!civstrat"):
-			data.ListAllStrengths(m.Content, s, m)
+			data.ListAllStrengths(s, m)
 		case strings.Contains(m.Content, "!civ"):
 			civ := data.GetNewRandomCiv("all")
 			data.PrintCivOutput("", civ, s, m)
@@ -103,7 +103,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				scrape.ScrapeStats()
 			}
 
-			data.GetCivLeaderBoardAll(s, m)
+			data.GetCivLeaderBoardAll(s, m, "data/leaderboard.json")
 		case strings.Contains(m.Content, "!winrate"):
 			data.GetCivWinRate(s, m)
 		// Secret cmd that can be used to manually trigger a rescrape of the winrate data

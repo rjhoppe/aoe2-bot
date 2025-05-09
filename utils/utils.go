@@ -9,6 +9,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+type DiscordSession interface {
+	ChannelMessageSend(channelID string, content string, options ...discordgo.RequestOption) (*discordgo.Message, error)
+}
+
 func SelectRandomArrayEle(arr []string) string {
 	source := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(source)
@@ -45,7 +49,7 @@ func CheckMsgForExclamation(msg string) bool {
 	return strings.ContainsRune(msg, cmdChar)
 }
 
-func IsValidCmd(validLen int, s *discordgo.Session, m *discordgo.MessageCreate) bool {
+var IsValidCmd = func(validLen int, s DiscordSession, m *discordgo.MessageCreate) bool {
 	if len(m.Content) < validLen {
 		errMsg := "Invalid input, not enough chars"
 		_, err := s.ChannelMessageSend(m.ChannelID, errMsg)

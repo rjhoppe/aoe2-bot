@@ -1,8 +1,11 @@
 package data
 
 import (
-	"testing",
-	"github.com/bwmarrin/discordgo",
+	"strings"
+	"testing"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/rjhoppe/aoe-bot/utils"
 )
 
 func TestGetNewRandomCiv_All(t *testing.T) {
@@ -81,12 +84,20 @@ func TestGetNewRandomCiv_Cavalry(t *testing.T) {
 
 func TestPrintCivOutput(t *testing.T) {
 	mockSession := &MockSession{}
+	mockCiv := Civilization{
+		Name:       "Britons",
+		Type:       "Foot archer",
+		Strengths:  "Flush archer, Crossbowmen rush",
+		Weaknesses: "Weak cavalry, Easily countered with Siege Rams, Reliant on Trebuchets for siege, Mediocre archer options outside of Longbowmen",
+	}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!civ",
+			Content:   "!civ",
+			ChannelID: "test-channel",
 		},
 	}
-	PrintCivOutput("all", mockSession, mockMessage)
+	PrintCivOutput("all", &mockCiv, mockSession, mockMessage)
+
 	if mockSession.LastChannelID == "" || mockSession.LastMessage == "" {
 		t.Errorf("Expected ChannelMessageSend to be called, but it wasn't")
 	}
@@ -99,7 +110,8 @@ func TestGetThreeRandomCivs(t *testing.T) {
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!civ",
+			Content:   "!civ",
+			ChannelID: "test-channel",
 		},
 	}
 	GetThreeRandomCivs(mockSession, mockMessage)
@@ -109,7 +121,7 @@ func TestGetThreeRandomCivs(t *testing.T) {
 	if mockSession.CallCount != 1 {
 		t.Errorf("Expected ChannelMessageSend to be called once, but it was called %d times", mockSession.CallCount)
 	}
-	
+
 	civs := strings.Split(mockSession.LastMessage, ",")
 	if len(civs) != 3 {
 		t.Errorf("Expected 3 civs, got %d", len(civs))
@@ -135,13 +147,13 @@ func TestGetThreeRandomCivs(t *testing.T) {
 func TestListAllStrengths_ValidCiv(t *testing.T) {
 	// Optionally, mock IsValidCmd to always return true
 	origIsValidCmd := utils.IsValidCmd
-	utils.IsValidCmd = func(_ int, _ *discordgo.Session, _ *discordgo.MessageCreate) bool { return true }
+	utils.IsValidCmd = func(_ int, _ utils.DiscordSession, _ *discordgo.MessageCreate) bool { return true }
 	defer func() { utils.IsValidCmd = origIsValidCmd }()
 
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!civstrat Britons", // "Britons" is a valid civ
+			Content:   "!civstrat Britons", // "Britons" is a valid civ
 			ChannelID: "test-channel",
 		},
 	}
@@ -158,13 +170,13 @@ func TestListAllStrengths_ValidCiv(t *testing.T) {
 // Test for invalid command (should not send a message)
 func TestListAllStrengths_InvalidCmd(t *testing.T) {
 	origIsValidCmd := utils.IsValidCmd
-	utils.IsValidCmd = func(_ int, _ *discordgo.Session, _ *discordgo.MessageCreate) bool { return false }
+	utils.IsValidCmd = func(_ int, _ utils.DiscordSession, _ *discordgo.MessageCreate) bool { return false }
 	defer func() { utils.IsValidCmd = origIsValidCmd }()
 
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!civstrat",
+			Content:   "!civstrat",
 			ChannelID: "test-channel",
 		},
 	}
@@ -178,13 +190,13 @@ func TestListAllStrengths_InvalidCmd(t *testing.T) {
 // Test for unknown civ (should not send a message)
 func TestListAllStrengths_UnknownCiv(t *testing.T) {
 	origIsValidCmd := utils.IsValidCmd
-	utils.IsValidCmd = func(_ int, _ *discordgo.Session, _ *discordgo.MessageCreate) bool { return true }
+	utils.IsValidCmd = func(_ int, _ utils.DiscordSession, _ *discordgo.MessageCreate) bool { return true }
 	defer func() { utils.IsValidCmd = origIsValidCmd }()
 
 	mockSession := &MockSession{}
 	mockMessage := &discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!civstrat NotACiv",
+			Content:   "!civstrat NotACiv",
 			ChannelID: "test-channel",
 		},
 	}

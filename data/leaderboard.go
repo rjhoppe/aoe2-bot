@@ -4,47 +4,25 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
+	"strconv"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/rjhoppe/aoe-bot/utils"
 )
 
 // leaderboard
-func GetCivLeaderBoardAll(s *discordgo.Session, m *discordgo.MessageCreate) error {
-	content, err := os.ReadFile("data/leaderboard.json")
+func GetCivLeaderBoardAll(s DiscordSession, m *discordgo.MessageCreate, fp string) error {
+	leaderboard, err := GetLeaderboardData(fp)
 	if err != nil {
-		return fmt.Errorf("error writing file: %w", err)
+		return fmt.Errorf("error getting leaderboard data: %w", err)
 	}
 
-	var parsedContent map[string]string
-	err = json.Unmarshal(content, &parsedContent)
+	msg, err := FormatLeaderboardData(leaderboard)
 	if err != nil {
-		return fmt.Errorf("error parsing leaderboard.json: %w", err)
+		return fmt.Errorf("error formatting leaderboard data: %w", err)
 	}
 
-	type pair struct {
-		Civ   string
-		Winrate float64
-	}
-	
-	var pairs []pair
-	for civ, winRateStr := range parsedContent {
-		winrate, err := strconv.ParseFloat(winRateStr, 64)
-		if err != nil {
-			return fmt.Errorf("error parsing winrate: %w", err)
-		}
-		pairs = append(pairs, pair{Civ: civ, Winrate: winrate})
-	}
-	
-	sort.Slice(pairs, func(i, j int) bool {
-		return pairs[i].Winrate > pairs[j].Winrate
-	})
-	
-	var msg string
-	for _, pair := range pairs {
-		msg += fmt.Sprintf("%v: %v\n", pair.Civ, pair.Winrate)
-	}
-	
 	_, err = s.ChannelMessageSend(m.ChannelID, msg)
 	if err != nil {
 		fmt.Printf("Error sending message to %v \n", msg)
@@ -53,8 +31,52 @@ func GetCivLeaderBoardAll(s *discordgo.Session, m *discordgo.MessageCreate) erro
 	return nil
 }
 
+// helper function to get the leaderboard data
+func GetLeaderboardData(fp string) (map[string]string, error) {
+	content, err := os.ReadFile(fp)
+	if err != nil {
+		return nil, fmt.Errorf("error reading leaderboard.json: %w", err)
+	}
+
+	var parsedContent map[string]string
+	err = json.Unmarshal(content, &parsedContent)
+	if err != nil {
+		return nil, fmt.Errorf("error parsing leaderboard.json: %w", err)
+	}
+
+	return parsedContent, nil
+}
+
+// helper function to format the leaderboard data
+func FormatLeaderboardData(data map[string]string) (string, error) {
+	type pair struct {
+		Civ     string
+		Winrate float64
+	}
+
+	var pairs []pair
+	for civ, winRateStr := range data {
+		winrate, err := strconv.ParseFloat(winRateStr, 64)
+		if err != nil {
+			return "", fmt.Errorf("error parsing winrate: %w", err)
+		}
+		pairs = append(pairs, pair{Civ: civ, Winrate: winrate})
+	}
+
+	sort.Slice(pairs, func(i, j int) bool {
+		return pairs[i].Winrate > pairs[j].Winrate
+	})
+
+	var msg string
+	for _, pair := range pairs {
+		msg += fmt.Sprintf("%v: %v\n", pair.Civ, pair.Winrate)
+	}
+
+	return msg, nil
+}
+
 // !winrate
-func GetCivWinRate(s *discordgo.Session, m *discordgo.MessageCreate) {
+func GetCivWinRate(s DiscordSession, m *discordgo.MessageCreate) {
 	isCmdValid := utils.IsValidCmd(10, s, m)
 	if !isCmdValid {
 		return
