@@ -6,6 +6,7 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/rjhoppe/aoe-bot/utils"
@@ -56,7 +57,8 @@ func FormatLeaderboardData(data map[string]string) (string, error) {
 
 	var pairs []pair
 	for civ, winRateStr := range data {
-		winrate, err := strconv.ParseFloat(winRateStr, 64)
+		trimmed := strings.TrimSuffix(winRateStr, "%")
+		winrate, err := strconv.ParseFloat(trimmed, 64)
 		if err != nil {
 			return "", fmt.Errorf("error parsing winrate: %w", err)
 		}
@@ -69,7 +71,7 @@ func FormatLeaderboardData(data map[string]string) (string, error) {
 
 	var msg string
 	for _, pair := range pairs {
-		msg += fmt.Sprintf("%v: %v\n", pair.Civ, pair.Winrate)
+		msg += fmt.Sprintf("%v: %.2f%%\n", pair.Civ, pair.Winrate)
 	}
 
 	return msg, nil
