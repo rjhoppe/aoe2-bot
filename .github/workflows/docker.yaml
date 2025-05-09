@@ -26,4 +26,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/aoe2-bot:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/aoe2-bot:latest
