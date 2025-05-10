@@ -13,10 +13,11 @@ repos:
     hooks:
     -   id: go-mod-tidy
     -   id: go-build-mod
-    # -   id: go-fmt
-    # Disable after first run
-    -   id: go-fmt-repo
+    -   id: go-fmt
         args: [ '-w' ]
+    # Disable after first run
+    # id: go-fmt-repo
+    # args: [ '-w' ]
     # -   id: go-lint
     # -   id: go-staticcheck-mod
     -   id: go-test-mod

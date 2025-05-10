@@ -492,6 +492,7 @@ func GetThreeRandomCivs(s DiscordSession, m *discordgo.MessageCreate) {
 	}
 }
 
+// !info <civ>
 func GetCivInfo(s DiscordSession, m *discordgo.MessageCreate) {
 	if len(m.Content) < 6 {
 		errMsg := "Invalid civ name"
@@ -501,7 +502,7 @@ func GetCivInfo(s DiscordSession, m *discordgo.MessageCreate) {
 		}
 	}
 
-	civRaw := m.Content[6:]
+	civRaw := utils.FirstCharToUpper(m.Content[6:])
 	civType := CivType[civRaw]
 	if civType != "" {
 		civStr := strings.Join(civStrengths[civRaw], ", ")
@@ -531,7 +532,7 @@ func ListAllStrengths(s DiscordSession, m *discordgo.MessageCreate) {
 		return
 	}
 
-	civRaw := m.Content[10:]
+	civRaw := utils.FirstCharToUpper(m.Content[10:])
 	civStrs := strings.Join(civStrengths[civRaw], ", ")
 	if civStrs != "" {
 		civType := CivType[civRaw]
