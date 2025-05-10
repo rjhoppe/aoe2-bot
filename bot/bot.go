@@ -43,6 +43,7 @@ func Start(params *BotParams) {
 	}
 
 	fmt.Println("Scraping stats...")
+	utils.CreateDataDir()
 	scrape.ScrapeStats()
 	fmt.Println("Scraping job complete")
 

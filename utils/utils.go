@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 
@@ -11,6 +12,15 @@ import (
 
 type DiscordSession interface {
 	ChannelMessageSend(channelID string, content string, options ...discordgo.RequestOption) (*discordgo.Message, error)
+}
+
+func CreateDataDir() {
+	err := os.MkdirAll("data", 0755)
+	if err != nil {
+		// handle error, e.g. log or return
+		fmt.Printf("Failed to create data directory: %v\n", err)
+		return
+	}
 }
 
 func SelectRandomArrayEle(arr []string) string {
