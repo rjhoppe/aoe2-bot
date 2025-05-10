@@ -13,7 +13,7 @@ COPY . .
 RUN go build -o discord-bot ./
 
 # --- Final Stage: Playwright + Go binary ---
-FROM mcr.microsoft.com/playwright:v1.43.1-jammy
+FROM mcr.microsoft.com/playwright:v1.51.1-jammy
 
 WORKDIR /app
 

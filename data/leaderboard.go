@@ -78,17 +78,18 @@ func FormatLeaderboardData(data map[string]string) (string, error) {
 }
 
 // !winrate
-func GetCivWinRate(s DiscordSession, m *discordgo.MessageCreate) {
+func GetCivWinRate(s DiscordSession, m *discordgo.MessageCreate, fp string) {
 	isCmdValid := utils.IsValidCmd(10, s, m)
 	if !isCmdValid {
 		return
 	}
 
-	civRaw := m.Content[9:]
+	civRaw := utils.FirstCharToUpper(m.Content[9:])
 
-	content, err := os.ReadFile("data/leaderboard.json")
+	content, err := os.ReadFile(fp)
 	if err != nil {
-		fmt.Printf("error writing file: %v", err)
+		errMsg := fmt.Sprintf("Error reading data file '%v'", err)
+		s.ChannelMessageSend(m.ChannelID, errMsg)
 		return
 	}
 

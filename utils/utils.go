@@ -61,7 +61,7 @@ var IsValidCmd = func(validLen int, s DiscordSession, m *discordgo.MessageCreate
 	return true
 }
 
-func PrintCmds(s *discordgo.Session, m *discordgo.MessageCreate) {
+func PrintCmds(s DiscordSession, m *discordgo.MessageCreate) {
 	var commandList strings.Builder
 	commandList.WriteString("**!civ** -> Return a random civ")
 	commandList.WriteString("\n")
@@ -93,7 +93,7 @@ func PrintCmds(s *discordgo.Session, m *discordgo.MessageCreate) {
 	commandList.WriteString("\n")
 	commandList.WriteString("**!civstrat <CIV>** -> Returns all the common strategies associated with particular civilization")
 	commandList.WriteString("\n")
-	commandList.WriteString("**!leaderboard** -> Returns the win-loss rankings for civs in competitive play")
+	commandList.WriteString("**!leaderboard** -> Returns the win rate for civs in competitive play")
 	cmds := commandList.String()
 	_, err := s.ChannelMessageSend(m.ChannelID, cmds)
 	if err != nil {

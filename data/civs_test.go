@@ -206,3 +206,108 @@ func TestListAllStrengths_UnknownCiv(t *testing.T) {
 		t.Errorf("Expected ChannelMessageSend to not be called for unknown civ, but it was called %d times", mockSession.CallCount)
 	}
 }
+
+func TestListAllStrengths_Lowercase(t *testing.T) {
+	origIsValidCmd := utils.IsValidCmd
+	utils.IsValidCmd = func(_ int, _ utils.DiscordSession, _ *discordgo.MessageCreate) bool { return true }
+	defer func() { utils.IsValidCmd = origIsValidCmd }()
+
+	mockSession := &MockSession{}
+	mockMessage := &discordgo.MessageCreate{
+		Message: &discordgo.Message{
+			Content:   "!civstrat mongols",
+			ChannelID: "test-channel",
+		},
+	}
+
+	expectedCivStr := strings.Join(civStrengths["Mongols"], ", ")
+	expectedCivType := CivType["Mongols"]
+	expectedEmojis := CivTypeToEmoji[expectedCivType]
+
+	ListAllStrengths(mockSession, mockMessage)
+
+	if mockSession.CallCount != 1 {
+		t.Errorf("Expected ChannelMessageSend to be called once, got %d", mockSession.CallCount)
+	}
+	if !strings.Contains(mockSession.LastMessage, "Mongols") {
+		t.Errorf("Expected message to contain 'Mongols', got: %s", mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedCivStr) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedCivStr, mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedEmojis) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedEmojis, mockSession.LastMessage)
+	}
+}
+
+func TestCivInfo(t *testing.T) {
+	mockSession := &MockSession{}
+	mockMessage := &discordgo.MessageCreate{
+		Message: &discordgo.Message{
+			Content:   "!info Turks",
+			ChannelID: "test-channel",
+		},
+	}
+
+	expectedCivStr := strings.Join(civStrengths["Turks"], ", ")
+	expectedCivWeak := strings.Join(civWeaknesses["Turks"], ", ")
+	expectedCivType := CivType["Turks"]
+	expectedEmojis := CivTypeToEmoji[expectedCivType]
+
+	GetCivInfo(mockSession, mockMessage)
+
+	if mockSession.CallCount != 1 {
+		t.Errorf("Expected ChannelMessageSend to be called once, got %d", mockSession.CallCount)
+	}
+	if !strings.Contains(mockSession.LastMessage, "Turks") {
+		t.Errorf("Expected message to contain 'Turks', got: %s", mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedCivStr) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedCivStr, mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedCivWeak) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedCivWeak, mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedEmojis) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedEmojis, mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedCivType) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedCivType, mockSession.LastMessage)
+	}
+}
+
+func TestCivInfo_Lowercase(t *testing.T) {
+	mockSession := &MockSession{}
+	mockMessage := &discordgo.MessageCreate{
+		Message: &discordgo.Message{
+			Content:   "!info goths",
+			ChannelID: "test-channel",
+		},
+	}
+	expectedCivStr := strings.Join(civStrengths["Goths"], ", ")
+	expectedCivWeak := strings.Join(civWeaknesses["Goths"], ", ")
+	expectedCivType := CivType["Goths"]
+	expectedEmojis := CivTypeToEmoji[expectedCivType]
+
+	GetCivInfo(mockSession, mockMessage)
+
+	if mockSession.CallCount != 1 {
+		t.Errorf("Expected ChannelMessageSend to be called once, got %d", mockSession.CallCount)
+	}
+	if !strings.Contains(mockSession.LastMessage, "Goths") {
+		t.Errorf("Expected message to contain 'Goths', got: %s", mockSession.LastMessage)
+	}
+
+	if !strings.Contains(mockSession.LastMessage, expectedCivStr) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedCivStr, mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedCivWeak) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedCivWeak, mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedEmojis) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedEmojis, mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedCivType) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedCivType, mockSession.LastMessage)
+	}
+}

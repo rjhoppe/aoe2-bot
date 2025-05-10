@@ -3,6 +3,7 @@ package data
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/bwmarrin/discordgo"
@@ -96,5 +97,94 @@ func TestGetCivLeaderBoardAll(t *testing.T) {
 	}
 	if mockSession.LastMessage != expectedOutput {
 		t.Errorf("Expected Discord message to be %q, got %q", expectedOutput, mockSession.LastMessage)
+	}
+}
+
+func TestGetCivWinRate(t *testing.T) {
+	mockSession := &MockSession{}
+	mockMessage := &discordgo.MessageCreate{
+		Message: &discordgo.Message{
+			Content:   "!winrate Vikings",
+			ChannelID: "test-channel",
+		},
+	}
+
+	mockJSON := `{
+		"Britons": "56.20%",
+		"Franks": "52.80%",
+		"Aztecs": "60.10%",
+		"Vikings": "51.23%"
+	}`
+
+	tempDir := t.TempDir()
+	testFile := filepath.Join(tempDir, "test_leaderboard.json")
+
+	err := os.WriteFile(testFile, []byte(mockJSON), 0644)
+	if err != nil {
+		t.Fatalf("Failed to write test leaderboard.json: %v", err)
+	}
+
+	expectedCivWinRate := "51.23%"
+	expectedCivType := CivType["Vikings"]
+	expectedEmojis := CivTypeToEmoji[expectedCivType]
+
+	GetCivWinRate(mockSession, mockMessage, testFile)
+
+	if mockSession.CallCount != 1 {
+		t.Errorf("Expected ChannelMessageSend to be called once, got %d", mockSession.CallCount)
+	}
+	if !strings.Contains(mockSession.LastMessage, "Vikings") {
+		t.Errorf("Expected message to contain 'Vikings', got: %s", mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedCivWinRate) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedCivWinRate, mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedEmojis) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedEmojis, mockSession.LastMessage)
+	}
+}
+
+func TestGetCivWinRate_Lowercase(t *testing.T) {
+	mockSession := &MockSession{}
+	mockMessage := &discordgo.MessageCreate{
+		Message: &discordgo.Message{
+			Content:   "!winrate poles",
+			ChannelID: "test-channel",
+		},
+	}
+
+	mockJSON := `{
+		"Britons": "56.20%",
+		"Franks": "52.80%",
+		"Poles": "48.91%",
+		"Aztecs": "60.10%",
+		"Vikings": "51.23%"
+	}`
+
+	tempDir := t.TempDir()
+	testFile := filepath.Join(tempDir, "test_leaderboard.json")
+
+	err := os.WriteFile(testFile, []byte(mockJSON), 0644)
+	if err != nil {
+		t.Fatalf("Failed to write test leaderboard.json: %v", err)
+	}
+
+	expectedCivWinRate := "48.91%"
+	expectedCivType := CivType["Poles"]
+	expectedEmojis := CivTypeToEmoji[expectedCivType]
+
+	GetCivWinRate(mockSession, mockMessage, testFile)
+
+	if mockSession.CallCount != 1 {
+		t.Errorf("Expected ChannelMessageSend to be called once, got %d", mockSession.CallCount)
+	}
+	if !strings.Contains(mockSession.LastMessage, "Poles") {
+		t.Errorf("Expected message to contain 'Poles', got: %s", mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedCivWinRate) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedCivWinRate, mockSession.LastMessage)
+	}
+	if !strings.Contains(mockSession.LastMessage, expectedEmojis) {
+		t.Errorf("Expected message to contain %v, got: %s", expectedEmojis, mockSession.LastMessage)
 	}
 }
